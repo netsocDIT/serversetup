@@ -3,11 +3,13 @@ Netsoc server setup scripts
 
 PLEASE NOTE!
 ******************************************************************
-For public servicing code, proper ways are a REQUIREMENT but i
-openly state, these scripts are hackish and badly written are guaranteed
-to make you cry but since we're the only ones using them, that's
-fine with me. Please don't take this as an indication of how i/we
-normally write code that serices the public
+For code that runs a public service or people interact with, i definitely
+agree that proper/standardised methods are a reuirement however 
+these scripts are supposed to be quick hackjobs that only we run
+These scripts are hackish and nasty and are guaranteed to make you
+cry. Please don't take this as an indication of how we normally code
+that runs public services
+
 ******************************************************************
 
 
