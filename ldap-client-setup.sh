@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+
+echo "unfinished + untested"
+
 cp configs/ldap-client temp/ldap-client
 
 

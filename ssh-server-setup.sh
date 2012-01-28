@@ -1,5 +1,6 @@
 #/bin/bash
 
+echo "finished, untested"
 
 #Config dir exists
 if [ ! -d "configs" ]; then
@@ -101,7 +102,7 @@ exit 1
 cp $temp/ssh-server/ssh-serverd_config /etc/ssh-server/ssh-serverd_config
 cp $temp/ssh-server/ssh-serverd_banner /etc/ssh-server/ssh-serverd_banner
 
-
+/etc/init.d/ssh restart
 
 
 

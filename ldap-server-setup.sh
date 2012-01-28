@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "unfinished + untested"
+
 
 if [ "`whoami`" != "root"]; then
 	echo "Must be root to run this script"

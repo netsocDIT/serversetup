@@ -21,12 +21,10 @@ List of services
 Workong on:
 *ssh server 
 *ldap client (libpam-ldapd)
-
+*ldap server
 
 Planned:
 
-*Ldap server
-*ssh server
 *dns server
 *client program groups
 

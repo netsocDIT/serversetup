@@ -10,7 +10,7 @@ usedns no
 #Server banner containing name, ip, desc
 Banner /etc/ssh/sshd_banner
 
-#Login groups - uncomment #currentMembers to allow regular users to login
+#Login groups 
 #desc: admins is a group in ldap consistanting of graham, mark and michael. currentMembers contains all our own users
 allowgroups admins #allow-login-all currentMembers
 
