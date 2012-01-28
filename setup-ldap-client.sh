@@ -1,15 +1,13 @@
 #!/usr/bin/bash
 
-configsTempDir= 'configs-tmp';
-configsDir= 'configs';
-
-rm $configsTempDir/*
-cp -r $configsDir/ldap $configsTempDir
-
-debconf-set-selections ldap/configs/debconf-defaults
-apt-get install libpam-ldapd 
+cp configs/ldap-client temp/ldap-client
 
 
+
+
+
+debconf-set-selections ldap-client/configs/debconf-defaults
+apt-get install libpam-ldap-clientd 
 
 
 
@@ -32,15 +30,19 @@ read sudoPassword
 
 
 #Setup configs
-sed -i 's/%hostname%/$hostname/g' $configsTempDir/ldap/*
-sed -i 's/%sudopassword%/$sudoPassword/g' $configsTempDir/ldap/ldap.conf
-sed -i 's/%nslcdpassword%/$nslcdPassword/g' $configsTempDir/ldap/nslcd.conf
+sed -i 's/%hostname%/$hostname/g' temp/ldap-client/*
+sed -i 's/%sudopassword%/$sudoPassword/g' temp/ldap-client/ldap-client.conf
+sed -i 's/%nslcdpassword%/$nslcdPassword/g' temp/ldap-client/nslcd.conf
 
 
-cp $configsTempDir/ldap/ca.crt /etc/ldap/ca.crt
-cp $configsTempDir/ldap/nslcd.conf /etc/nslcd.conf
-cp $configsTempDir/ldap/ldap.conf /etc/ldap/ldap.conf
+#debug
+exit 0
 
 
-chmod 700 /etc/ldap/ldap.conf
+cp temp/ldap-client/ca.crt /etc/ldap-client/ca.crt
+cp temp/ldap-client/nslcd.conf /etc/nslcd.conf
+cp temp/ldap-client/ldap-client.conf /etc/ldap-client/ldap-client.conf
+
+
+chmod 700 /etc/ldap-client/ldap-client.conf
 chmod 700 /etc/nslcd.conf

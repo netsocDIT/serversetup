@@ -14,9 +14,9 @@
                Please see http://netsoc.dit.ie for more information
 
                         Hostname: %hostname% 
-                          Access: %access%
+                          Access: %bannerAccess%
                       IP Address: %ip%
-                     Description: %short-description%
+                     Description: %description%
 
   Warning: DIT's Student regulations still apply to the use and activities
 of Netsocs servers. If it's not permitted there, it's still not permitted here.

@@ -12,8 +12,7 @@ Banner /etc/ssh/sshd_banner
 
 #Login groups - uncomment #currentMembers to allow regular users to login
 #desc: admins is a group in ldap consistanting of graham, mark and michael. currentMembers contains all our own users
-allowgroups admins
-#allow-login-all allowgroups currentMembers
+allowgroups admins #allow-login-all currentMembers
 
 #Allow pub key authentication
 AuthorizedKeysFile	%h/.ssh/authorized_keys
