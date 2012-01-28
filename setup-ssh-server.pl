@@ -42,8 +42,8 @@ uncomment #allow-login-all in ssh/sshd_config
 
 
 #Copy config files to system
-copy ("$configTemp/ssh/sshd_config" "/etc/ssh/sshd_config") or die "Copying of sshd config failedi: $!";
-copy ("$configTemp/ssh/sshd_banner" "/etc/ssh/sshd_banner") or die "Copying of sshd bannerfailedi: $!";
+copy ("$configTemp/ssh/sshd_config" "/etc/ssh/sshd_config") or die "Copying of sshd config failed: $!";
+copy ("$configTemp/ssh/sshd_banner" "/etc/ssh/sshd_banner") or die "Copying of sshd banner failed: $!";
 
 
 
