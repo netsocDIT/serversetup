@@ -16,7 +16,7 @@ restorefile=$1
 
 
 
-if [ "`whoami`" != "root"]; then
+if [ "`whoami`" != "root" ]; then
 	echo "Must be root to run this script"
 	exit 1
 fi
@@ -66,21 +66,26 @@ debconf-set-selections < temp/ldap-server/debconf-defaults
 
 apt-get -y install slapd ldap-utils pwgen
 
+#TODO configure tls ldif file to contain the right location
+#TODO handle tls certs/keys
+
+#Make sure to add all schemas first here
+ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/sudo_schema.ldif
+#ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/tls.ldif
+ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/disable_anon.ldif
+#removes olcrootpw from the olcDatabase entry. Since we define the password in our dn: cn=admin,dc=netsoc,dc=dit,dc=ie entry, we don't need this
+ldapmodify -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/removeolcrootpw.ldif 
+
+
+#Restore old database
 
 if [ -n $restorefile ]; then
 	echo "Stopping slapd and restoring file $restorefile"
 	/etc/init.d/slapd stop
-	slapadd -b "dc=netsoc,dc=dit,dc=ie" < $restorefile
+	rm /var/lib/ldap/*
+	su -s /bin/bash -c "slapadd -b 'dc=netsoc,dc=dit,dc=ie' < $restorefile" openldap
 	/etc/init.d/slapd start
 fi
 
-#TODO configure tls ldif file to contain the right location
-#TODO handle tls certs/keys
-
-#removes olcrootpw from the olcDatabase entry. Since we define the password in our dn: cn=admin,dc=netsoc,dc=dit,dc=ie entry, we don't need this
-ldapmodify -H ldapi:/// -Y EXTERNAL-f temp/ldap-server/removeolcrootpw.ldif 
 
 
-ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/sudo_schema.ldif
-ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/tls.ldif
-ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/disable_anon.ldif
