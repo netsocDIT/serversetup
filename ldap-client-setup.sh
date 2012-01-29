@@ -36,7 +36,7 @@ cp configs/ldap-client temp/ldap-client
 
 
 debconf-set-selections ldap-client/configs/debconf-defaults
-apt-get install libpam-ldap-clientd 
+apt-get -y install libpam-ldap-clientd 
 
 
 

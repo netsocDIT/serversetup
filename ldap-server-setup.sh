@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 
 if [ -z $1 ] ; then
 	echo "No slapcat dump file specified to restore. If you wish to restore a database, type:"
@@ -61,7 +61,10 @@ if [ -d $ldapDir ]; then
 fi
 
 #TODO set default options with debconf
-apt-get install slapd ldap-utils pwgen
+
+debconf-set-selections < temp/ldap-server/debconf-defaults
+
+apt-get -y install slapd ldap-utils pwgen
 
 
 if [ -n $restorefile ]; then
