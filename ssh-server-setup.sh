@@ -42,15 +42,21 @@ echo allowedusers: $allowedUsers
 
 
 if [ $allowedUsers == "all" ]; then
-
-	#uncomment #allow-login-all in ssh-server/ssh-serverd_config
+	sed -i "s/#allowgroups currentMembers/allowgroups currentMembers/g" temp/ssh-server/sshd_config
 	echo "test"
 fi
 
 
+echo -e "\nDo you want to allow root login? (y/n)?"
+read allowroot
+
+if [ "$allowroot" == "y" ]; then
+	sed -i "s/#allowgroups root /allowgroups root/g" temp/ssh-server/sshd_config
+fi
+
 
 systemHostname=`hostname`
-echo -e "\nBanner Hostname. press enter for ($systemHostname)"
+echo -e "\nBanner Hostname. Default: $systemHostname"
 read hostname
 
 if [ -z $hostname ]; then
@@ -60,7 +66,7 @@ fi
 
 
 
-echo -e "\nBanner access (eg restricted, all members)"
+echo -e "\nBanner access displayed (eg restricted, all members)"
 read bannerAccess
 
 echo -e "\nBanner description (eg, ldap server, main login server)"
@@ -70,15 +76,16 @@ echo -e
 
 bannerip=`ifconfig | egrep -o "inet addr:[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}" | sed 's/^inet addr://'| grep -v 127.0.0.1| head -n 1`
 
-echo "Banner IP (empty for $bannerip)"
+echo "Banner IP  Default:$bannerip"
 read bannerIP
 
 
 echo "Confirmation:"
-echo "    ssh-server users allowed: $allowedUsers"
 echo "      Banner hostname: $hostname"      
 echo "   Banner description: $description"
 echo "    Banner IP address: $bannerip"
+echo "    ssh users allowed: $allowedUsers"
+echo "           rootlogins: $allowroot"
 
 echo -e "\nIs this correct? (y/n) \r"
 read confirm
