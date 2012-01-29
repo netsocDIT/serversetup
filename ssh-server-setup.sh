@@ -1,6 +1,6 @@
 #/bin/bash
 
-if [ "`whoami`" != "root"]; then
+if [ "`whoami`" != "root" ]; then
 	echo "Must be root to run this script"
 	exit 1
 fi
