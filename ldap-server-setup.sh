@@ -1,7 +1,7 @@
 #/bin/bash
 
 if [ -z $1 ] ; then
-	echo "No slapcat dump file specified to restore. If you wish to restore a database, type:"
+	echo -e  "\nNo slapcat dump file specified to restore. If you wish to restore a database, type:"
 	echo "./ldap-server-setup.sh backupfile"
 	echo "Do you want to continue anyway? (y/n)"
 	read continueAnyway
@@ -94,4 +94,4 @@ if [ -n $restorefile ]; then
 fi
 
 
-
+#TODO - add in some checks to make sure the system works properly
