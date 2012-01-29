@@ -70,10 +70,16 @@ apt-get -y install slapd ldap-utils pwgen
 #TODO handle tls certs/keys
 
 #Make sure to add all schemas first here
+echo "Adding sudo schema"
 ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/sudo_schema.ldif
+
+#echo "adding tls options"
 #ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/tls.ldif
+
+echo "disabling anonymous binding"
 ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/disable_anon.ldif
-#removes olcrootpw from the olcDatabase entry. Since we define the password in our dn: cn=admin,dc=netsoc,dc=dit,dc=ie entry, we don't need this
+
+echo "remove olcrootpw from oldDatabase in cn=config"
 ldapmodify -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/removeolcrootpw.ldif 
 
 
@@ -83,7 +89,7 @@ if [ -n $restorefile ]; then
 	echo "Stopping slapd and restoring file $restorefile"
 	/etc/init.d/slapd stop
 	rm /var/lib/ldap/*
-	su -s /bin/bash -c "slapadd -b 'dc=netsoc,dc=dit,dc=ie' < $restorefile" openldap
+	su -s /bin/bash -c "/usr/sbin/slapadd -b 'dc=netsoc,dc=dit,dc=ie' < $restorefile" openldap
 	/etc/init.d/slapd start
 fi
 
