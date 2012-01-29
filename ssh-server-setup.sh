@@ -1,6 +1,10 @@
 #/bin/bash
 
-echo "finished, untested"
+if [ "`whoami`" != "root"]; then
+	echo "Must be root to run this script"
+	exit 1
+fi
+
 
 #Config dir exists
 if [ ! -d "configs" ]; then
@@ -85,22 +89,28 @@ if [ $confirm != "y" ]; then
 fi
 
 
-sed -i "s/%ip%/$bannerip/g" temp/ssh-server/ssh-serverd_banner
-sed -i "s/%hostname%/$hostname/g" temp/ssh-server/ssh-serverd_banner
-sed -i "s/%description%/$description/g" temp/ssh-server/ssh-serverd_banner
-sed -i "s/%bannerAccess%/$bannerAccess/g" temp/ssh-server/ssh-serverd_banner
+sed -i "s/%ip%/$bannerip/g" temp/ssh-server/sshd_banner
+sed -i "s/%hostname%/$hostname/g" temp/ssh-server/sshd_banner
+sed -i "s/%description%/$description/g" temp/ssh-server/sshd_banner
+sed -i "s/%bannerAccess%/$bannerAccess/g" temp/ssh-server/sshd_banner
 
 if [ $allowedUsers == "admins" ]; then
-	sed -i 's/#allow-login-all//' temp/ssh-server/ssh-serverd_config
+	sed -i 's/#allow-login-all//' temp/ssh-server/sshd_config
+fi
+
+echo -e  "\nConfigs written to 'temp'"
+echo -e "Do you wish to copy files to system? (y/n) \r"
+read confirm
+
+if [ $confirm != "y" ]; then
+	echo "Your files are in the 'temp' directory, now exiting"
+	exit 0
 fi
 
 
-echo "debug enabled, not copying files"
-exit 1
-
 #Copy temp files to system
-cp $temp/ssh-server/ssh-serverd_config /etc/ssh-server/ssh-serverd_config
-cp $temp/ssh-server/ssh-serverd_banner /etc/ssh-server/ssh-serverd_banner
+cp temp/ssh-server/sshd_config /etc/ssh/sshd_config
+cp temp/ssh-server/sshd_banner /etc/ssh/sshd_banner
 
 /etc/init.d/ssh restart
 

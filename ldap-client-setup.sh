@@ -1,7 +1,33 @@
 #!/usr/bin/bash
 
 
-echo "unfinished + untested"
+if [ "`whoami`" != "root"]; then
+	echo "Must be root to run this script"
+	exit 1
+fi
+
+
+#Config dir exists
+if [ ! -d "configs" ]; then
+	echo "Main configs dir missing. Can't do anything without it. This contains all the templates to deploy to the system"
+	echo "If you have assumed you don't need this, you're wrong. Please put it back"
+	exit 1
+fi
+
+#Temp dir exists
+if [ ! -d "temp" ]; then
+
+	mkdir temp
+fi
+
+
+#temp ldap-client dir exists
+if [ -d "temp/ssh-server" ]; then
+
+	echo  "Cleaning up old config files"
+	rm -r "temp/ldap-client"
+fi
+
 
 cp configs/ldap-client temp/ldap-client
 
@@ -38,14 +64,20 @@ sed -i 's/%sudopassword%/$sudoPassword/g' temp/ldap-client/ldap-client.conf
 sed -i 's/%nslcdpassword%/$nslcdPassword/g' temp/ldap-client/nslcd.conf
 
 
-#debug
-exit 0
+echo -e  "\nConfigs written to 'temp'"
+echo -e "Do you wish to copy files to system? (y/n) \r"
+read confirm
+
+if [ $confirm != "y" ]; then
+	echo "Your files are in the 'temp' directory, now exiting"
+	exit 0
+fi
 
 
-cp temp/ldap-client/ca.crt /etc/ldap-client/ca.crt
+cp temp/ldap-client/ca.crt /etc/ldap/ca.crt
 cp temp/ldap-client/nslcd.conf /etc/nslcd.conf
-cp temp/ldap-client/ldap-client.conf /etc/ldap-client/ldap-client.conf
+cp temp/ldap-client/ldap.conf /etc/ldap/ldap-client.conf
 
 
-chmod 700 /etc/ldap-client/ldap-client.conf
+chmod 700 /etc/ldap/ldap.conf
 chmod 700 /etc/nslcd.conf
