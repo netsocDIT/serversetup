@@ -33,6 +33,7 @@ if [ ! -d "temp" ]; then
 	mkdir temp
 fi
 
+chmod 700 temp
 
 #temp ldap-server dir exists
 if [ -d "temp/ldap-server" ]; then

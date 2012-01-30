@@ -19,6 +19,7 @@ if [ ! -d "temp" ]; then
 	mkdir temp
 fi
 
+chmod 700 temp
 
 #temp ssh-server dir exists
 if [ -d "temp/ssh-server" ]; then

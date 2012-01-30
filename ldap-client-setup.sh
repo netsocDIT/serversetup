@@ -20,6 +20,7 @@ if [ ! -d "temp" ]; then
 	mkdir temp
 fi
 
+chmod 700 temp
 
 #ldap-client dir exists
 if [ -d "temp/ldap-client" ]; then
