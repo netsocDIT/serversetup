@@ -60,7 +60,6 @@ if [ -d $ldapDir ]; then
 	fi
 fi
 
-#TODO set default options with debconf
 
 debconf-set-selections < temp/ldap-server/debconf-defaults
 
@@ -89,7 +88,7 @@ if [ -n $restorefile ]; then
 	echo "Stopping slapd and restoring file $restorefile"
 	/etc/init.d/slapd stop
 	rm /var/lib/ldap/*
-	su -s /bin/bash -c "/usr/sbin/slapadd -b 'dc=netsoc,dc=dit,dc=ie' < $restorefile" openldap
+	echo $restorefile | su -s /bin/bash -c "/usr/sbin/slapadd -b 'dc=netsoc,dc=dit,dc=ie'" openldap
 	/etc/init.d/slapd start
 fi
 
