@@ -80,6 +80,10 @@ cp temp/ldap-client/ldap.conf /etc/ldap/ldap.conf
 cp temp/ldap-client/nsswitch.conf /etc/nsswitch.conf
 
 /etc/init.d/nslcd restart
+/etc/init.d/nscd stop
+getent passwd
+getent group
+/etc/init.d/nscd start
 
 chmod 700 /etc/ldap/ldap.conf
 chmod 700 /etc/nslcd.conf
