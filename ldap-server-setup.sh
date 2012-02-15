@@ -89,7 +89,7 @@ if [ -n $restorefile ]; then
 	echo "Stopping slapd and restoring file $restorefile"
 	/etc/init.d/slapd stop
 	rm /var/lib/ldap/*
-	echo $restorefile | su -s /bin/bash -c "/usr/sbin/slapadd -b 'dc=netsoc,dc=dit,dc=ie'" openldap
+	cat $restorefile | su -s /bin/bash -c "/usr/sbin/slapadd -b 'dc=netsoc,dc=dit,dc=ie'" openldap
 	/etc/init.d/slapd start
 fi
 
