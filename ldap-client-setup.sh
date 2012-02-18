@@ -74,8 +74,8 @@ if [ "$manualOrGenerate" == "g" ] ; then
 		exit 1
 	fi
 
-	#ldapserver="timmy.netsoc.dit.ie"
-	ldapserver="192.168.1.48"
+	ldapserver="timmy.netsoc.dit.ie"
+	#ldapserver="192.168.1.48"
 
 	echo "Ldap server: default $ldapserver"
 	read inputldapserver
