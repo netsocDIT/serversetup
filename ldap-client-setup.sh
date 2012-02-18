@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-if [ "`whoami`" != "root" ]; then
+if [ `id -u` -ne 0 ]; then
 	echo "Must be root to run this script"
 	exit 1
 fi
@@ -32,12 +32,9 @@ fi
 
 cp -r configs/ldap-client/ temp/ldap-client
 
-
-
-
-
+apt-get update
 debconf-set-selections temp/ldap-client/debconf-defaults
-apt-get -y install libpam-ldapd 
+apt-get -y install libpam-ldapd libstring-random-perl libdigest-sha1-perl pwgen ldap-utils
 
 
 
@@ -50,19 +47,68 @@ if [ -z $hostname ]; then
 	hostname=$systemHostname
 fi
 
-echo "Nslcd password: "
-read nslcdPassword
+sed -i "s/%hostname%/$hostname/g" temp/ldap-client/*
 
-echo "Sudo password"
-read sudoPassword
 
+echo "Would you like to (g)enerate and create ldap account automatically or (e)nter password manually" 
+read manualOrGenerate
+
+if [ "$manualOrGenerate" == "g" ] ; then
+	umaskold=`umask`
+	umask 077
+	touch temp/ldap-client/sudopassword
+	touch temp/ldap-client/nsspassword
+	nssPassword=`pwgen -s 200 1| tee temp/ldap-client/nsspassword`
+	sudoPassword=`pwgen -s 200 1| tee temp/ldap-client/sudopassword`
+	umask $umaskold
+	
+	nssssha=`cat temp/ldap-client/nsspassword | helpers/ssha-generate.pl | base64`
+	sudossha=`cat temp/ldap-client/sudopassword | helpers/ssha-generate.pl | base64`
+	sed -i "s/%password%/$nssssha/g" temp/ldap-client/nssuser.ldif
+	sed -i "s/%password%/$sudossha/g" temp/ldap-client/sudouser.ldif
+
+	echo "Do you wish to create ldap accounts now? (y/n)"
+	read confirm
+
+	if [ "$confirm" != "y" ]; then
+		exit 1
+	fi
+
+	#ldapserver="timmy.netsoc.dit.ie"
+	ldapserver="192.168.1.48"
+
+	echo "Ldap server: default $ldapserver"
+	read inputldapserver
+
+	if [ $inputldapserver ] ; then
+		ldapserver=$inputldapserver
+	fi	
+
+	echo "server server selected: " $ldapserver
+
+	echo "Now creating ldap accounts...please enter ldap admin password"
+	cat temp/ldap-client/nssuser.ldif temp/ldap-client/sudouser.ldif | ldapadd -v  -D "cn=admin,dc=netsoc,dc=dit,dc=ie" -x -W -H ldap://$ldapserver
+
+else
+	if [ "$manualOrGenerate" == "e" ]; then 
+		echo "Nslcd password: "
+		read nssPassword
+
+		echo "Sudo password"
+		read sudoPassword
+	else
+		echo "invalid option, exiting"
+		exit 1
+	fi
+fi
 
 
 
 #Setup configs
-sed -i "s/%hostname%/$hostname/g" temp/ldap-client/*
 sed -i "s/%sudopassword%/$sudoPassword/g" temp/ldap-client/ldap.conf
-sed -i  "s/%nslcdpassword%/$nslcdPassword/g" temp/ldap-client/nslcd.conf
+sed -i  "s/%nslcdpassword%/$nssPassword/g" temp/ldap-client/nslcd.conf
+
+
 
 
 echo -e  "\nConfigs written to 'temp'"

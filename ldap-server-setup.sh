@@ -16,7 +16,7 @@ restorefile=$1
 
 
 
-if [ "`whoami`" != "root" ]; then
+if [ `id -u` -ne 0 ]; then
 	echo "Must be root to run this script"
 	exit 1
 fi
@@ -63,7 +63,7 @@ fi
 
 
 debconf-set-selections < temp/ldap-server/debconf-defaults
-
+apt-get update
 apt-get -y install slapd ldap-utils pwgen
 
 #TODO configure tls ldif file to contain the right location

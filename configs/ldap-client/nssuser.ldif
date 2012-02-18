@@ -1,0 +1,7 @@
+dn: cn=%hostname%,ou=nssusers,ou=admin,dc=netsoc,dc=dit,dc=ie
+cn: %hostname%
+objectClass: top
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+userPassword:: %password%
+

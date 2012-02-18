@@ -1,6 +1,6 @@
 #/bin/bash
 
-if [ "`whoami`" != "root" ]; then
+if [ `id -u` -ne 0 ]; then
 	echo "Must be root to run this script"
 	exit 1
 fi
@@ -42,7 +42,7 @@ echo allowedusers: $allowedUsers
 
 
 
-if [ $allowedUsers == "all" ]; then
+if [ "$allowedUsers" == "all" ]; then
 	sed -i "s/#allowgroups currentMembers/allowgroups currentMembers/g" temp/ssh-server/sshd_config
 	echo "test"
 fi
@@ -91,7 +91,7 @@ echo "           rootlogins: $allowroot"
 echo -e "\nIs this correct? (y/n) \r"
 read confirm
 
-if [ $confirm != "y" ]; then
+if [ "$confirm" != "y" ]; then
 	echo "setup aborted"
 	exit 1
 fi
@@ -102,7 +102,7 @@ sed -i "s/%hostname%/$hostname/g" temp/ssh-server/sshd_banner
 sed -i "s/%description%/$description/g" temp/ssh-server/sshd_banner
 sed -i "s/%bannerAccess%/$bannerAccess/g" temp/ssh-server/sshd_banner
 
-if [ $allowedUsers == "admins" ]; then
+if [ "$allowedUsers" == "admins" ]; then
 	sed -i 's/#allow-login-all//' temp/ssh-server/sshd_config
 fi
 
@@ -110,7 +110,7 @@ echo -e  "\nConfigs written to 'temp'"
 echo -e "Do you wish to copy files to system? (y/n) \r"
 read confirm
 
-if [ $confirm != "y" ]; then
+if [ "$confirm" != "y" ]; then
 	echo "Your files are in the 'temp' directory, now exiting"
 	exit 0
 fi
