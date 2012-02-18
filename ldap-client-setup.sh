@@ -34,7 +34,7 @@ cp -r configs/ldap-client/ temp/ldap-client
 
 apt-get update
 debconf-set-selections temp/ldap-client/debconf-defaults
-apt-get -y install libpam-ldapd libstring-random-perl libdigest-sha1-perl pwgen ldap-utils
+apt-get -y install libpam-ldapd libstring-random-perl libdigest-sha1-perl pwgen ldap-utils sudo-ldap
 
 
 
