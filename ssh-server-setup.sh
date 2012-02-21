@@ -82,11 +82,12 @@ read bannerIP
 
 
 echo "Confirmation:"
-echo "      Banner hostname: $hostname"      
-echo "   Banner description: $description"
-echo "    Banner IP address: $bannerip"
-echo "    ssh users allowed: $allowedUsers"
-echo "           rootlogins: $allowroot"
+echo "          Banner hostname: $hostname"
+echo "       Banner description: $description"
+echo " Banner access displayed : $bannerAccess"
+echo "        Banner IP address: $bannerip"
+echo "        ssh users allowed: $allowedUsers"
+echo "               rootlogins: $allowroot"
 
 echo -e "\nIs this correct? (y/n) \r"
 read confirm
