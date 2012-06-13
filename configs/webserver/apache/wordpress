@@ -1,0 +1,49 @@
+<VirtualHost *:80>
+        ServerName www.netsoc.dit.ie
+        DocumentRoot /var/www/wordpress
+        AssignUserID wordpress wordpress
+
+        <Directory /var/www/wordpress >
+                Options FollowSymLinks MultiViews
+                AllowOverride All
+                #Order allow,deny
+                allow from all
+        </Directory>
+
+        LogLevel warn
+
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+</VirtualHost>
+
+# SSL if mod_ssl enabled
+<IfModule mod_ssl.c>
+        <VirtualHost *:443>
+                ServerName www.netsoc.dit.ie
+                DocumentRoot /var/www/wordpress
+                AssignUserID wordpress wordpress
+
+                <Directory /var/www/wordpress >
+                        Options FollowSymLinks MultiViews
+                        AllowOverride FileInfo
+                #       Order allow,deny
+                        allow from all
+                </Directory>
+
+                LogLevel warn
+
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+
+                SSLEngine on
+                # Key
+                SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+                # Cert
+                SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+
+                # Chain (optional)
+                #SSLCertificateChainFile /etc/apache2/ssl.crt/server-ca.crt
+
+        </VirtualHost>
+</IfModule>
+

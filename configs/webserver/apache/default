@@ -1,0 +1,19 @@
+<VirtualHost *:80>
+        RedirectMatch .? http://www.netsoc.dit.ie/
+</VirtualHost>
+<IfModule mod_ssl.c>
+        <VirtualHost *:443>
+                RedirectMatch .? https://www.netsoc.dit.ie/
+
+                SSLEngine on
+                # Key
+                SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+                # Cert
+                SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+
+                # Chain (optional)
+                #SSLCertificateChainFile /etc/apache2/ssl.crt/server-ca.crt
+
+        </VirtualHost>
+</IfModule>
+

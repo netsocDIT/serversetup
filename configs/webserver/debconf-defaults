@@ -1,0 +1,29 @@
+mysql-server-5.1	mysql-server/root_password_again	password	%mysql-root-password%
+mysql-server-5.1	mysql-server/root_password	password	%mysql-root-password%
+phpmyadmin	phpmyadmin/app-password-confirm	password	
+phpmyadmin	phpmyadmin/mysql/admin-pass	password	
+phpmyadmin	phpmyadmin/password-confirm	password	
+phpmyadmin	phpmyadmin/setup-password	password	
+phpmyadmin	phpmyadmin/mysql/app-pass	password	
+phpmyadmin	phpmyadmin/remove-error	select	abort
+phpmyadmin	phpmyadmin/internal/reconfiguring	boolean	false
+phpmyadmin	phpmyadmin/missing-db-package-error	select	abort
+phpmyadmin	phpmyadmin/setup-username	string	admin
+phpmyadmin	phpmyadmin/db/app-user	string	
+phpmyadmin	phpmyadmin/install-error	select	abort
+phpmyadmin	phpmyadmin/reconfigure-webserver	multiselect	apache2
+phpmyadmin	phpmyadmin/remote/newhost	string	
+phpmyadmin	phpmyadmin/remote/host	select	
+phpmyadmin	phpmyadmin/upgrade-error	select	abort
+phpmyadmin	phpmyadmin/dbconfig-reinstall	boolean	false
+phpmyadmin	phpmyadmin/dbconfig-install	boolean	false
+phpmyadmin	phpmyadmin/db/dbname	string	
+phpmyadmin	phpmyadmin/database-type	select	mysql
+phpmyadmin	phpmyadmin/internal/skip-preseed	boolean	true
+phpmyadmin	phpmyadmin/remote/port	string	
+phpmyadmin	phpmyadmin/dbconfig-upgrade	boolean	true
+phpmyadmin	phpmyadmin/upgrade-backup	boolean	true
+phpmyadmin	phpmyadmin/dbconfig-remove	boolean	
+phpmyadmin	phpmyadmin/mysql/method	select	unix socket
+phpmyadmin	phpmyadmin/mysql/admin-user	string	root
+phpmyadmin	phpmyadmin/purge	boolean	false
