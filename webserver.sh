@@ -95,7 +95,7 @@ sed -i "s/%mysql-root-password%/$mysqlrootpassword/g" temp/webserver/debconf-def
 
 # Update- set mysql root password and install packages
 debconf-set-selections < temp/webserver/debconf-defaults
-apt-get -y install apache2 mysql-server php5 phpmyadmin php5-ldap apache2-mpm-itk php5-mysql php5-mcrypt php5-ldap rsync
+apt-get -y install apache2 mysql-server php5 phpmyadmin php5-ldap apache2-mpm-itk php5-mysql php5-mcrypt php5-ldap rsync ca-certificates
 
 
 
@@ -120,16 +120,19 @@ a2ensite wordpress
 
 a2enmod ssl
 a2enmod rewrite
+a2enmod headers
+a2enmod expires
 
 # Install latest wordpress
 wget -4 -O temp/webserver/latest.tar.gz http://wordpress.org/latest.tar.gz
 tar -zxvf temp/webserver/latest.tar.gz -C temp/webserver/.
 cp -r temp/webserver/wordpress/* /var/www/wordpress/.
 cp temp/webserver/wordpress/wp-config.php /var/www/wordpress/wp-config.php
-
+echo -e  "<?php\n `wget -4 https://api.wordpress.org/secret-key/1.1/salt/ -O -  -q`\n?>"  > temp/webserver/wordpress/wp-keys.php
+cp temp/webserver/wordpress/wp-keys.php /var/www/wordpress/wp-keys.php
 
 mysql -u root -p$mysqlrootpassword < temp/webserver/wordpress.sql
-mysql -u netsoc -p$mysqlwordpresspassword netsoc < $sqlrestorepath
+mysql -u wordpress -p$mysqlwordpresspassword wordpress < $sqlrestorepath
 
 
 if [ -d "$wpcontentpath" ]; then
@@ -152,4 +155,7 @@ fi
 chown -R wordpress:wordpress /var/www/wordpress
 chown -R wiki:wiki /var/www/wiki
 chown -R forum:forum /var/www/forum
+chmod 700 /var/www/forum
+chmod 700 /var/www/wordpress
+chmod 700 /var/www/wiki
 /etc/init.d/apache2 restart
