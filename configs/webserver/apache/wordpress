@@ -36,9 +36,9 @@
                 ErrorLog ${APACHE_LOG_DIR}/error.log
 
                 SSLEngine on
-                # Key
-                SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
                 # Cert
+                SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+                # Key
                 SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
 
                 # Chain (optional)

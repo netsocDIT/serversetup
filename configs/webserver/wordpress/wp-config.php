@@ -17,10 +17,10 @@
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('WP_CACHE', true); //Added by WP-Cache Manager
-define('DB_NAME', 'netsoc');
+define('DB_NAME', 'wordpress');
 
 /** MySQL database username */
-define('DB_USER', 'netsoc');
+define('DB_USER', 'wordpress');
 
 /** MySQL database password */
 define('DB_PASSWORD', '%mysql-wordpress-password%');
@@ -43,14 +43,10 @@ define('DB_COLLATE', '');
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         'iu?]E3:>Gp_KR7qRbW x&?uo2%t`]w;v2$En;i7v:=K/lGL>&n{-:J%VYZ$ ZD=f');
-define('SECURE_AUTH_KEY',  '|0iyX:l#eu+HF&16H~|YpWg_o&[!XU7WA#62XdKlnDIdCL[P:{ND<mx/42_UXOiZ');
-define('LOGGED_IN_KEY',    'qz;EzE`r tQ~1 oZKt9]PNdu0@o&SxCM4AERQ*sb]7c:8das82 BzGq`1-AvkVzH');
-define('NONCE_KEY',        '/kWPi{A5x$2Er<~gGp/.fWrM)y42cUi/B89rNX2v4n5||fuLy*DX@|@ee+6Zk>fo');
-define('AUTH_SALT',        'HJB0MjZVGZ!ZM# cXwET8F(1W#qF+tx+hTnLBDvDDe2*J@RM|?u.~:JMd54.uk+~');
-define('SECURE_AUTH_SALT', ']bMXlrfP5,}xCIJvRf,Nq?c!X>`;;Z1/zL#zOQgjQ;=~0yy-m(J8)%=|Q102Fs7)');
-define('LOGGED_IN_SALT',   '-(}(-bI-OuKp*LD-8&mGF:2|vjTfvz+5,-bkEw;`{.N8pMdP{n sq-YSg*3MD5`.');
-define('NONCE_SALT',       'U DM~1-.d}{}qVsM/4H=MZ}cQo?hJ4>rb!crZ-<F<_rZ-0vQe+[O(O+^|d8^PXl~');
+
+// Change 13-06-2012 Mark Cunningham Netsoc DIT
+// Keys are no longer here but are included - easy to replace keys file
+include "wp-keys.php";
 
 /**#@-*/
 

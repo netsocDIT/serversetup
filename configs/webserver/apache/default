@@ -1,5 +1,5 @@
 <VirtualHost *:80>
-        RedirectMatch .? http://www.netsoc.dit.ie/
+        RedirectMatch permanent .? http://www.netsoc.dit.ie/
 </VirtualHost>
 <IfModule mod_ssl.c>
         <VirtualHost *:443>
