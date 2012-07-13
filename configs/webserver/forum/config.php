@@ -4,9 +4,9 @@
 $dbms = 'mysqli';
 $dbhost = 'localhost';
 $dbport = '';
-$dbname = '%forumdatabase%';
-$dbuser = '%forumuser%';
-$dbpasswd = '%forumpassword%';
+$dbname = 'forum';
+$dbuser = 'forum';
+$dbpasswd = '%mysql-forum-password%';
 $table_prefix = 'phpbb_';
 $acm_type = 'file';
 $load_extensions = '';
