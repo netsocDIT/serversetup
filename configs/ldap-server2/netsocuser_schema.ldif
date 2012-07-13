@@ -1,0 +1,10 @@
+dn: cn=netsocUser,cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: netsocUser
+olcAttributeTypes: ( 1.3.6.1.4.1.39112.1.1.1.1 NAME 'studentNumber' DESC 'DIT Student number' EQUALITY caseExactIA5Match SUBSTR caseExactIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: ( 1.3.6.1.4.1.39112.1.1.1.2 NAME 'signUpDate' DESC 'Date user first signed up’' EQUALITY caseExactIA5Match SUBSTR caseExactIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: ( 1.3.6.1.4.1.39112.1.1.1.6 NAME 'lastRenewalDate' DESC 'Date member was last renewd on’' EQUALITY caseExactIA5Match SUBSTR caseExactIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcAttributeTypes: ( 1.3.6.1.4.1.39112.1.1.1.3 NAME 'committeeMemberSignedOff' DESC 'Committee member that signed off on member signup' EQUALITY caseExactIA5Match SUBSTR caseExactIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+olcObjectClasses: ( 1.3.6.1.4.1.39112.1.1.2.1 NAME 'netsocUser' DESC 'Netsoc DIT user' SUP top STRUCTURAL MUST (cn $ givenName$ sn $ signUpDate $ lastRenewalDate$ studentNumber $ committeeMemberSignedOff $ uid $ gidNumber $ uidNumber $ mail $ loginShell ) MAY ( mobile $ userPassword  $ homeDirectory $ description ))
+
+
