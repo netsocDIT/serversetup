@@ -55,6 +55,11 @@ mysql --force -u root -p$mysqlrootpassword < temp/webserver/mysql-recreate-forum
 # Restoring old database
 mysql -u forum -p$mysqlforumpassword forum < $sqlrestorepath
 
+netsocadminpassword=`pwgen -s 20 1| tee /etc/forum-netsocadminpassword`
+chmod 700 /etc/forum-netsocadminpassword
+netsocadminhash=`helpers/phpbbhash.php $netsocadminpassword| tee temp/webserver/forum/netsocadminhash`
+sed -i "s#%netsocadmin-hash%#$netsocadminhash#g" temp/webserver/forum/resetnetsocadminlocal.sql
+
 
 echo "Use ldap or mysql database for authentication?"
 echo "If you pick mysql, a username + password will be suplied for you to login with"
@@ -62,21 +67,13 @@ echo "(l)ldap or (m)ysql?"
 
 read ldapmethod
 
-# Mysql auth method - reset netsocadmin password
+mysql -u forum -p$mysqlforumpassword forum < temp/webserver/forum/resetnetsocadminlocal.sql
+
+# Set auth-method to mysql
 if [ "$ldapmethod" == "m" ]; then
-	
-	netsocadminpassword=`pwgen -s 20 1`
-	netsocadminhash=`helpers/phpbbhash.php $netsocadminpassword`
-	sed -i "s#%netsocadmin-hash%#$netsocadminhash#g" temp/webserver/forum/resetnetsocadminlocal.sql
-	# Set auth-method to mysql
-	sed -i "s/%auth-method%/Db/g" temp/webserver/forum/config.sql
-
-	mysql -u forum -p$mysqlforumpassword forum < temp/webserver/forum/resetnetsocadminlocal.sql
-	echo "Username: netsocadmin"
-	echo -e "Password: $netsocadminpassword\n\n"
-
+	sed -i "s/%auth-method%/db/g" temp/webserver/forum/config.sql
 else
-	sed -i "s/%auth-method%/ldap/g" temp/webserver/forum/config.php
+	sed -i "s/%auth-method%/ldap/g" temp/webserver/forum/config.sql
 fi
 
 echo "Now setting up ldap auth (this does not affect your option to use mysql or ldap previously"
