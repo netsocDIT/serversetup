@@ -22,10 +22,11 @@
                 ServerName www.netsoc.dit.ie
                 DocumentRoot /var/www/wordpress
                 AssignUserID wordpress wordpress
+		Header add Strict-Transport-Security "max-age=604800"
 
                 <Directory /var/www/wordpress >
                         Options FollowSymLinks MultiViews
-                        AllowOverride FileInfo
+                        AllowOverride All
                 #       Order allow,deny
                         allow from all
                 </Directory>
@@ -38,11 +39,15 @@
                 SSLEngine on
                 # Cert
                 SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+		#SSLCertificateFile    /etc/ssl/netsocWebserver/www.crt
+
+
                 # Key
                 SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+                #SSLCertificateKeyFile /etc/ssl/netsocWebserver/www.pem
 
                 # Chain (optional)
-                #SSLCertificateChainFile /etc/apache2/ssl.crt/server-ca.crt
+                #SSLCertificateChainFile /etc/ssl/netsocWebserver/chain.pem
 
         </VirtualHost>
 </IfModule>

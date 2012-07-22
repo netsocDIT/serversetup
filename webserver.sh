@@ -124,11 +124,14 @@ fi
 
 # Update- set mysql root password and install packages
 debconf-set-selections < temp/webserver/debconf-defaults
-apt-get -y install apache2 mysql-server php5 php5-ldap apache2-mpm-itk php5-mysql php5-mcrypt php5-ldap rsync ca-certificates php5-curl bzip2
+apt-get -y install apache2 mysql-server php5 php5-ldap apache2-mpm-itk php5-mysql php5-mcrypt php5-ldap rsync ca-certificates php5-curl bzip2 php5-imagick php5-gd
+
+mkdir /etc/ssl/netsocWebserver/
 
 # Setup apache virtualhost files
 cp temp/webserver/apache/ports.conf /etc/apache2/ports.conf
 cp temp/webserver/apache/default /etc/apache2/sites-available/default
+cp temp/webserver/apache/chain.pem /etc/ssl/netsocWebserver/chain.pem
 
 a2ensite default
 a2enmod ssl

@@ -126,6 +126,7 @@ echo "Copying over phpbb config.php file"
 cp temp/webserver/forum/config.php /var/www/forum/.
 
 rm -rf /var/www/forum/install
+rm -rf /var/www/forum/cache/*
 
 chown -R forum:forum /var/www/forum
 

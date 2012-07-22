@@ -12,8 +12,8 @@
 
         LogLevel warn
 
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/forum.access.log combined
+        ErrorLog ${APACHE_LOG_DIR}/forum.error.log
 </VirtualHost>
 
 # SSL if mod_ssl enabled
@@ -32,8 +32,8 @@
 
                 LogLevel warn
 
-                CustomLog ${APACHE_LOG_DIR}/access.log combined
-                ErrorLog ${APACHE_LOG_DIR}/error.log
+                CustomLog ${APACHE_LOG_DIR}/forum.access.log combined
+                ErrorLog ${APACHE_LOG_DIR}/forum.error.log
 
                 SSLEngine on
                 # Cert

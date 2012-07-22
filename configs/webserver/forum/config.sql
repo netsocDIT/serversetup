@@ -10,4 +10,3 @@ update phpbb_config set config_value = 'ou=users,dc=netsoc,dc=dit,dc=ie' where c
 update phpbb_config set config_value = 'forum.netsoc.dit.ie' where config_name = 'server_name';
 update phpbb_config set config_value = '443' where config_name = 'server_port';
 update phpbb_config set config_value = 'https://' where config_name = 'server_protocol';
-
