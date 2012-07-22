@@ -1,0 +1,6 @@
+dn: cn=sudo,ou=%hostname%,ou=machines,dc=netsoc,dc=dit,dc=ie
+cn: sudo 
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+userPassword:: %password%
+
