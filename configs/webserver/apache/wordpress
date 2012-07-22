@@ -1,19 +1,16 @@
 <VirtualHost *:80>
         ServerName www.netsoc.dit.ie
-        DocumentRoot /var/www/wordpress
+
+        RewriteEngine On
+        RewriteCond %{HTTPS} off
+        RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
         AssignUserID wordpress wordpress
 
-        <Directory /var/www/wordpress >
-                Options FollowSymLinks MultiViews
-                AllowOverride All
-                #Order allow,deny
-                allow from all
-        </Directory>
+        LogLevel info
+        CustomLog ${APACHE_LOG_DIR}/wordpress.access.log combined
+        ErrorLog ${APACHE_LOG_DIR}/wordpress.error.log
 
-        LogLevel warn
-
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-        ErrorLog ${APACHE_LOG_DIR}/error.log
 </VirtualHost>
 
 # SSL if mod_ssl enabled
