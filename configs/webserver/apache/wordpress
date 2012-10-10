@@ -7,7 +7,7 @@
 
 	AssignUserID wordpress wordpress
 
-	LogLevel info
+	LogLevel notice
 	CustomLog ${APACHE_LOG_DIR}/wordpress.access.log combined
 	ErrorLog ${APACHE_LOG_DIR}/wordpress.error.log
 
@@ -28,7 +28,7 @@
 			allow from all
 		</Directory>
 
-		LogLevel warn
+		LogLevel notice
 
 		CustomLog ${APACHE_LOG_DIR}/access.log combined
 		ErrorLog ${APACHE_LOG_DIR}/error.log
