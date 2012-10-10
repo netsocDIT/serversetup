@@ -108,6 +108,11 @@ cp temp/webserver/wordpress/wp-config.php /var/www/wordpress/wp-config.php
 echo -e  "<?php\n `wget -4 https://api.wordpress.org/secret-key/1.1/salt/ -O -  -q`\n?>"  > temp/webserver/wordpress/wp-keys.php
 if ! grep -q "SECURE_AUTH_SALT" temp/webserver/wordpress/wp-keys.php; then
 	echo "Error, donloading of wordpress secret-key salts failed"
+	echo "Continue? y/n"
+	read continue
+	if [ "$continue" != "y" ]; then
+		exit
+	fi
 fi
 
 #Copy over secret key salts to wordpress dir
