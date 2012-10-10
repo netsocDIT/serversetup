@@ -1,19 +1,16 @@
 <VirtualHost *:80>
-        ServerName forum.netsoc.dit.ie
-        DocumentRoot /var/www/forum
-        AssignUserID forum forum
+        ServerName www.netsoc.dit.ie
 
-        <Directory /var/www/forum >
-                Options FollowSymLinks MultiViews
-                AllowOverride All
-                #Order allow,deny
-                allow from all
-        </Directory>
+        RewriteEngine On
+        RewriteCond %{HTTPS} off
+        RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
-        LogLevel warn
+        AssignUserID wordpress wordpress
 
-        CustomLog ${APACHE_LOG_DIR}/forum.access.log combined
-        ErrorLog ${APACHE_LOG_DIR}/forum.error.log
+        LogLevel notice
+        CustomLog ${APACHE_LOG_DIR}/wordpress.access.log combined
+        ErrorLog ${APACHE_LOG_DIR}/wordpress.error.log
+
 </VirtualHost>
 
 # SSL if mod_ssl enabled
