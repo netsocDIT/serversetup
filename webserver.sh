@@ -1,4 +1,9 @@
 #/bin/bash
+#Setup 
+#	Apache2
+#	Plugins (like rewrite/headers etc)
+#	mysql server (with password create/reset/purge ability)
+#	NO SERVICES HERE (like forum/wiki)
 
 if [ `id -u` -ne 0 ]; then
 	echo "Must be root to run this script"
