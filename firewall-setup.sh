@@ -36,12 +36,11 @@ cp -r configs/firewall temp/firewall
 
 mkdir /etc/firewall
 cp temp/firewall/iptables.sh /etc/firewall/iptables.sh
-chmod 700 
 chmod +x /etc/firewall/iptables.sh
 
 chmod -R  700 /etc/firewall
 
-ln -s /etc/firewall/iptables.sh /etc/network/if-pre-up.d/iptables.sh
+ln -s /etc/firewall/iptables.sh /etc/network/if-up.d/iptables.sh
 
 /etc/firewall/iptables.sh
 
