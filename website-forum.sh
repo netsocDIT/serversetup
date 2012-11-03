@@ -117,7 +117,17 @@ useradd forum -d /var/www/forum -s /bin/false
 chmod 700 /var/www/forum
 
 # Install phpbb
-wget -4 -O temp/webserver/phpbb.tar.bz2 http://www.phpbb.com/files/release/phpBB-3.0.10.tar.bz2
+wget -4 -O temp/webserver/phpbb.tar.bz2 https://download.phpbb.com/pub/release/3.0/3.0.10/phpBB-3.0.10.tar.bz2
+if [ `md5sum temp/webserver/phpbb.tar.bz2  | cut -f 1 -d ' '`!= "926f80d166546db03472b0a0f05c8edb" ]; then 
+	echo -e "\n\nSERIOUS ERROR (PAY ATTENTION)"
+	echo "phpbb-3.0.10.tar.gz2 download has failed it\'s integrity check (md5sum)
+	This could be (but not likely) due to mitm. More than likely the file got cut off or is unavailable
+	Either way, what we downloaded wasn't what we expected. More than likely if we continue we'll be missing
+some important files or could have a backdoored version of phpbb.
+ Exiting..."
+	exit
+fi 
+
 echo "extracting phpbb..."
 tar -jxf temp/webserver/phpbb.tar.bz2 -C temp/webserver/.
 echo "coping files to /var/www/forum"
