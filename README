@@ -7,14 +7,13 @@ These are scripts to setup services/daemons/whatever
 List of services 
 
 Finished:
-
-
-Workong on:
 *ssh server 
 *ldap client (libpam-ldapd)
 *ldap server
-*web-forum
 *web-wordpress
+
+Workong on:
+*web-forum
 
 Planned:
 *web-wiki
