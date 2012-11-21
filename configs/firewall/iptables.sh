@@ -38,7 +38,6 @@ iptables -A INPUT -i lo -j ACCEPT
 ip6tables -A INPUT -i lo -j ACCEPT
 
 iptables -A INPUT -d 127.0.0.0/8 ! -i lo -j REJECT --reject-with icmp-port-unreachable
-ip6tables -A INPUT -d 127.0.0.0/8 ! -i lo -j REJECT --reject-with icmp6-port-unreachable
 
 
 
