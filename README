@@ -1,32 +1,19 @@
 Netsoc server setup scripts
 
-
-PLEASE NOTE!
-******************************************************************
-For code that runs a public service or people interact with, i definitely
-agree that proper/standardised methods are a requirement however 
-these scripts are supposed to be quick hackjobs that only we run
-These scripts are hackish and nasty and are guaranteed to make you
-cry. Please don't take this as an indication of how we normally code
-that runs public services
-
-******************************************************************
-
-
+ldap-server2 and ldap-client2 refer to the new setup with the new schema. The old ones should not be needed but are left there for record until all old servers/setups have been decomissioned
 
 These are scripts to setup services/daemons/whatever 
 
 List of services 
 
 Finished:
-
-
-Workong on:
 *ssh server 
 *ldap client (libpam-ldapd)
 *ldap server
-*web-forum
 *web-wordpress
+
+Workong on:
+*web-forum
 
 Planned:
 *web-wiki
