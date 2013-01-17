@@ -1,25 +1,18 @@
 #/bin/bash
 
-if [ -z $1 ] ; then
-	echo -e  "\nNo slapcat dump file specified to restore. If you wish to restore a database, type:"
-	echo "./ldap-server-setup.sh backupfile"
-	echo "Do you want to continue anyway? (y/n)"
-	read continueAnyway
-	
-	if [ "$continueAnyway" != "y" ]; then
-		exit 1
-	fi
-	
-fi
-
-restorefile=$1
-
-
-
 if [ `id -u` -ne 0 ]; then
 	echo "Must be root to run this script"
 	exit 1
 fi
+
+if [ -z $1 ] ; then
+	echo -e  "\nNo backup files specified to restore. If you wish to restore a database, type:"
+	echo "./ldap-server-setup2.sh backupfile"
+	exit
+fi
+
+restoredatabase=$1
+
 
 #Config dir exists
 if [ ! -d "configs" ]; then
@@ -35,20 +28,19 @@ fi
 
 chmod 700 temp
 
-#temp ldap-server dir exists
-if [ -d "temp/ldap-server" ]; then
+#temp ldap-server2 dir exists
+if [ -d "temp/ldap-server2" ]; then
 
 	echo  "Cleaning up old config files"
-	rm -r "temp/ldap-server"
+	rm -r "temp/ldap-server2"
 fi
 
 #copy files
-cp -r configs/ldap-server temp/ldap-server
+cp -r configs/ldap-server2 temp/ldap-server2
 
 
 
-ldapDir="/var/lib/ldap"
-#ldapDir="/var/lib/ldap-netsoc"
+ldapDir="/var/lib/ldap-netsoc"
 
 #Check for old files + delete
 if [ -d $ldapDir ]; then
@@ -57,41 +49,38 @@ if [ -d $ldapDir ]; then
 	read removeOld
 
 	if [ "$removeOld" == "y" ];then
-		rm -rf /var/lib/ldap/*
+		rm -rf $ldapDir/
+	else
+		exit
 	fi
 fi
 
+mkdir $ldapDir
 
-debconf-set-selections < temp/ldap-server/debconf-defaults
+debconf-set-selections < temp/ldap-server2/debconf-defaults
 apt-get update
 apt-get -y install slapd ldap-utils pwgen
 
 #TODO configure tls ldif file to contain the right location
 #TODO handle tls certs/keys
 
-#Make sure to add all schemas first here
-echo "Adding sudo schema"
-ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/sudo_schema.ldif
-
-#echo "adding tls options"
-#ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/tls.ldif
-
-echo "disabling anonymous binding"
-ldapadd -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/disable_anon.ldif
-
-echo "remove olcrootpw from oldDatabase in cn=config"
-ldapmodify -H ldapi:/// -Y EXTERNAL -f temp/ldap-server/removeolcrootpw.ldif 
-
 
 #Restore old database
 
-if [ -n $restorefile ]; then
-	echo "Stopping slapd and restoring file $restorefile"
-	/etc/init.d/slapd stop
-	rm /var/lib/ldap/*
-	cat $restorefile | su -s /bin/bash -c "/usr/sbin/slapadd -b 'dc=netsoc,dc=dit,dc=ie'" openldap
-	/etc/init.d/slapd start
-fi
+/etc/init.d/slapd stop
+rm -rf /etc/ldap/slapd.d/*
 
+echo "Now restoring cn=config"
+slapadd -F /etc/ldap/slapd.d/ -n0 -l  temp/ldap-server2/cn.config.ldif
+echo "Adding netsoc user objectClass schema..."
+slapadd -n 0 < temp/ldap-server2/netsocuser_schema.ldif
+echo "Adding sudo schema..."
+slapadd -n 0 < temp/ldap-server2/sudo_schema.ldif
 
-#TODO - add in some checks to make sure the system works properly
+echo "Now restoring database contents"
+slapadd -b "dc=netsoc,dc=dit,dc=ie" < $restoredatabase
+
+echo "Fixing permissions..."
+chown -R openldap:openldap /var/lib/ldap-netsoc/
+chown -R openldap:openldap /etc/ldap/slapd.d/
+/etc/init.d/slapd start
