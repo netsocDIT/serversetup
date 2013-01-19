@@ -1,6 +1,5 @@
-dn: cn=%hostname%,ou=sudousers,ou=admin,dc=netsoc,dc=dit,dc=ie
-cn: %hostname%
-objectClass: top
+dn: cn=sudo,ou=%hostname%,ou=machines,dc=netsoc,dc=dit,dc=ie
+cn: sudo 
 objectClass: simpleSecurityObject
 objectClass: organizationalRole
 userPassword:: %password%

@@ -7,7 +7,7 @@ fi
 
 if [ -z $1 ] ; then
 	echo -e  "\nNo backup files specified to restore. If you wish to restore a database, type:"
-	echo "./ldap-server-setup2.sh backupfile"
+	echo "./ldap-server-setup.sh backupfile"
 	echo "The backup file is an ldif format that would come from typing something like slapcat -b \"dc=netsoc,dc=dit,dc=ie\" > backupfile.ldif on the ldap server"
 	echo "the cn=config file is included within this script and is not needed"
 	exit
@@ -30,15 +30,15 @@ fi
 
 chmod 700 temp
 
-#temp ldap-server2 dir exists
-if [ -d "temp/ldap-server2" ]; then
+#temp ldap-server dir exists
+if [ -d "temp/ldap-server" ]; then
 
 	echo  "Cleaning up old config files"
-	rm -r "temp/ldap-server2"
+	rm -r "temp/ldap-server"
 fi
 
 #copy files
-cp -r configs/ldap-server2 temp/ldap-server2
+cp -r configs/ldap-server temp/ldap-server
 
 
 
@@ -59,7 +59,7 @@ fi
 
 mkdir $ldapDir
 
-debconf-set-selections < temp/ldap-server2/debconf-defaults
+debconf-set-selections < temp/ldap-server/debconf-defaults
 apt-get update
 apt-get -y install slapd ldap-utils pwgen
 
@@ -73,11 +73,11 @@ apt-get -y install slapd ldap-utils pwgen
 rm -rf /etc/ldap/slapd.d/*
 
 echo "Now restoring cn=config"
-slapadd -F /etc/ldap/slapd.d/ -n0 -l  temp/ldap-server2/cn.config.ldif
+slapadd -F /etc/ldap/slapd.d/ -n0 -l  temp/ldap-server/cn.config.ldif
 echo "Adding netsoc user objectClass schema..."
-slapadd -n 0 < temp/ldap-server2/netsocuser_schema.ldif
+slapadd -n 0 < temp/ldap-server/netsocuser_schema.ldif
 echo "Adding sudo schema..."
-slapadd -n 0 < temp/ldap-server2/sudo_schema.ldif
+slapadd -n 0 < temp/ldap-server/sudo_schema.ldif
 
 echo "Now restoring database contents"
 slapadd -b "dc=netsoc,dc=dit,dc=ie" < $restoredatabase

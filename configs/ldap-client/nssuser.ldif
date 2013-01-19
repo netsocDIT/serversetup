@@ -1,6 +1,9 @@
-dn: cn=%hostname%,ou=nssusers,ou=admin,dc=netsoc,dc=dit,dc=ie
-cn: %hostname%
-objectClass: top
+dn: ou=%hostname%,ou=machines,dc=netsoc,dc=dit,dc=ie
+ou: %hostname%
+objectclass: organizationalunit
+
+dn: cn=nslcd,ou=%hostname%,ou=machines,dc=netsoc,dc=dit,dc=ie
+cn: nslcd
 objectClass: simpleSecurityObject
 objectClass: organizationalRole
 userPassword:: %password%

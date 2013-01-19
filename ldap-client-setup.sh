@@ -22,18 +22,18 @@ fi
 
 chmod 700 temp
 
-#ldap-client2 dir exists
-if [ -d "temp/ldap-client2" ]; then
+#ldap-client dir exists
+if [ -d "temp/ldap-client" ]; then
 
 	echo  "Cleaning up old config files"
-	rm -r "temp/ldap-client2"
+	rm -r "temp/ldap-client"
 fi
 
 
-cp -r configs/ldap-client2/ temp/ldap-client2
+cp -r configs/ldap-client/ temp/ldap-client
 
 apt-get update
-debconf-set-selections temp/ldap-client2/debconf-defaults
+debconf-set-selections temp/ldap-client/debconf-defaults
 apt-get -y install libpam-ldapd libstring-random-perl libdigest-sha1-perl pwgen ldap-utils sudo-ldap
 
 
@@ -47,7 +47,7 @@ if [ -z $hostname ]; then
 	hostname=$systemHostname
 fi
 
-sed -i "s/%hostname%/$hostname/g" temp/ldap-client2/*
+sed -i "s/%hostname%/$hostname/g" temp/ldap-client/*
 
 
 echo "Would you like to (g)enerate and create ldap account automatically or (e)nter password manually" 
@@ -56,16 +56,16 @@ read manualOrGenerate
 if [ "$manualOrGenerate" == "g" ] ; then
 	umaskold=`umask`
 	umask 077
-	touch temp/ldap-client2/sudopassword
-	touch temp/ldap-client2/nsspassword
-	nssPassword=`pwgen -s 20 1| tee temp/ldap-client2/nsspassword`
-	sudoPassword=`pwgen -s 20 1| tee temp/ldap-client2/sudopassword`
+	touch temp/ldap-client/sudopassword
+	touch temp/ldap-client/nsspassword
+	nssPassword=`pwgen -s 20 1| tee temp/ldap-client/nsspassword`
+	sudoPassword=`pwgen -s 20 1| tee temp/ldap-client/sudopassword`
 	umask $umaskold
 	
-	nssssha=`cat temp/ldap-client2/nsspassword | helpers/ssha-generate.pl | base64`
-	sudossha=`cat temp/ldap-client2/sudopassword | helpers/ssha-generate.pl | base64`
-	sed -i "s/%password%/$nssssha/g" temp/ldap-client2/nssuser.ldif
-	sed -i "s/%password%/$sudossha/g" temp/ldap-client2/sudouser.ldif
+	nssssha=`cat temp/ldap-client/nsspassword | helpers/ssha-generate.pl | base64`
+	sudossha=`cat temp/ldap-client/sudopassword | helpers/ssha-generate.pl | base64`
+	sed -i "s/%password%/$nssssha/g" temp/ldap-client/nssuser.ldif
+	sed -i "s/%password%/$sudossha/g" temp/ldap-client/sudouser.ldif
 
 	echo "Do you wish to create ldap accounts now? (y/n)"
 	read confirm
@@ -87,7 +87,7 @@ if [ "$manualOrGenerate" == "g" ] ; then
 	echo "server server selected: " $ldapserver
 
 	echo "Now creating ldap accounts...please enter ldap admin password"
-	cat temp/ldap-client2/nssuser.ldif temp/ldap-client2/sudouser.ldif | ldapadd -v  -D "cn=admin,dc=netsoc,dc=dit,dc=ie" -x -W -H ldap://$ldapserver
+	cat temp/ldap-client/nssuser.ldif temp/ldap-client/sudouser.ldif | ldapadd -v  -D "cn=admin,dc=netsoc,dc=dit,dc=ie" -x -W -H ldap://$ldapserver
 
 else
 	if [ "$manualOrGenerate" == "e" ]; then 
@@ -105,8 +105,8 @@ fi
 
 
 #Setup configs
-sed -i "s/%sudopassword%/$sudoPassword/g" temp/ldap-client2/ldap.conf
-sed -i  "s/%nslcdpassword%/$nssPassword/g" temp/ldap-client2/nslcd.conf
+sed -i "s/%sudopassword%/$sudoPassword/g" temp/ldap-client/ldap.conf
+sed -i  "s/%nslcdpassword%/$nssPassword/g" temp/ldap-client/nslcd.conf
 
 
 
@@ -121,10 +121,10 @@ if [ $confirm != "y" ]; then
 fi
 
 
-cp temp/ldap-client2/ca.crt /etc/ldap/ca.crt
-cp temp/ldap-client2/nslcd.conf /etc/nslcd.conf
-cp temp/ldap-client2/ldap.conf /etc/ldap/ldap.conf
-cp temp/ldap-client2/nsswitch.conf /etc/nsswitch.conf
+cp temp/ldap-client/ca.crt /etc/ldap/ca.crt
+cp temp/ldap-client/nslcd.conf /etc/nslcd.conf
+cp temp/ldap-client/ldap.conf /etc/ldap/ldap.conf
+cp temp/ldap-client/nsswitch.conf /etc/nsswitch.conf
 
 /etc/init.d/nslcd restart
 /etc/init.d/nscd stop
