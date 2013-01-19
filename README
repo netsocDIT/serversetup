@@ -1,26 +1,26 @@
 Netsoc server setup scripts
 
-ldap-server2 and ldap-client2 refer to the new setup with the new schema. The old ones should not be needed but are left there for record until all old servers/setups have been decomissioned
 
 These are scripts to setup services/daemons/whatever 
 
 List of services 
 
 Finished:
-*ssh server 
-*ldap client (libpam-ldapd)
+*ssh server  (includes banner and allowed users/groups setup)
+*ldap client (run on servers you want to enable logging in with ldap on)
 *ldap server
-*web-wordpress
+*web-wordpress (main website www.netsoc.dit.ie)
 
-Workong on:
+Working on:
 *web-forum
+*Firewall 
 
 Planned:
-*web-wiki
-
+*web-wiki 
+ -(see mediawiki-test branch) - mediawiki is not final solution
 *dns server
-*client program groups
+ - we have a separate repo for bind. The reason for this being that we can make changes on
+  the server and push up without trying to push to the main serversetup repo.
 
 
 
-This may be  half replaced by deb packages in our own repo later
