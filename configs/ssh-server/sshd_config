@@ -11,7 +11,7 @@ usedns no
 Banner /etc/ssh/sshd_banner
 
 # ---Login groups---
-allowgroups admins
+allowgroups globaladmins
 #allowgroups currentMembers
 #allowgroups root 
 
