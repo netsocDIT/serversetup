@@ -1,4 +1,5 @@
 #/bin/bash
+# This sets up iptables to run initially on startup by placing it at the bottom of rc.local
 
 if [ `id -u` -ne 0 ]; then
 	echo "Must be root to run this script"
@@ -40,7 +41,14 @@ chmod +x /etc/firewall/iptables.sh
 
 chmod -R  700 /etc/firewall
 
-ln -s /etc/firewall/iptables.sh /etc/network/if-up.d/iptables.sh
+cp /etc/rc.local temp/firewall/rc.local.orig
+sed -i 's#^exit 0$#/etc/firewall/iptables.sh\nexit 0#' /etc/rc.local
+
+echo 'reading out non-commented lines in /etc/rc.local  lines of rc.local to verify iptables line is properly there'
+echo 'VERIFY THAT iptables.sh has been successfully added'
+cat /etc/rc.local | grep -v '^#'
+
+echo "the original rc.local has been copied to temp/firewall/rc.local.orig. If you're not happy with this new updated file. do NOT rerun this script or it'll overwrite it orig file with the new copy of rc.local that's now there"
 
 /etc/firewall/iptables.sh
 
