@@ -34,7 +34,7 @@ cp -r configs/ldap-client/ temp/ldap-client
 
 apt-get update
 debconf-set-selections temp/ldap-client/debconf-defaults
-apt-get -y install libpam-ldapd libstring-random-perl libdigest-sha1-perl pwgen ldap-utils sudo-ldap
+apt-get -y install libpam-ldapd libstring-random-perl libdigest-sha1-perl pwgen ldap-utils sudo-ldap php5-cli php5-ldap
 
 
 
@@ -54,29 +54,8 @@ echo "Would you like to (g)enerate and create ldap account automatically or (e)n
 read manualOrGenerate
 
 if [ "$manualOrGenerate" == "g" ] ; then
-	umaskold=`umask`
-	umask 077
-	touch temp/ldap-client/sudopassword
-	touch temp/ldap-client/nsspassword
-	nssPassword=`pwgen -s 20 1| tee temp/ldap-client/nsspassword`
-	sudoPassword=`pwgen -s 20 1| tee temp/ldap-client/sudopassword`
-	umask $umaskold
-	
-	nssssha=`cat temp/ldap-client/nsspassword | helpers/ssha-generate.pl | base64`
-	sudossha=`cat temp/ldap-client/sudopassword | helpers/ssha-generate.pl | base64`
-	sed -i "s/%password%/$nssssha/g" temp/ldap-client/nssuser.ldif
-	sed -i "s/%password%/$sudossha/g" temp/ldap-client/sudouser.ldif
-
-	echo "Do you wish to create ldap accounts now? (y/n)"
-	read confirm
-
-	if [ "$confirm" != "y" ]; then
-		exit 1
-	fi
 
 	ldapserver="ldap.netsoc.dit.ie"
-	#ldapserver="192.168.1.48"
-
 	echo "Ldap server: default $ldapserver"
 	read inputldapserver
 
@@ -86,13 +65,59 @@ if [ "$manualOrGenerate" == "g" ] ; then
 
 	echo "server server selected: " $ldapserver
 
-	echo "Now creating ldap accounts...please enter ldap admin password"
-	cat temp/ldap-client/nssuser.ldif temp/ldap-client/sudouser.ldif | ldapadd -v  -D "cn=admin,dc=netsoc,dc=dit,dc=ie" -x -W -H ldap://$ldapserver
+
+	echo "Reset password if service/machine account exist? (y/n)" 
+	read resetpasswordifneeded
+
+	umaskold=`umask`
+	umask 077
+	cat /dev/null > temp/ldap-client/sudopassword
+	cat /dev/null > temp/ldap-client/nslcdpassword
+
+	echo "Now creating ldap accounts...please enter ldap admin password twice (once for nslcd, once for sudo)"
+
+	while [ "$success1" != true ]; do
+		echo "creating nslcd account...";
+		if [ "$resetpasswordifneeded" = "y" ]; then
+			helpers/machine-manage.php --add-service -s nslcd -m $hostname -h $ldapserver --force > temp/ldap-client/nslcdpassword
+		else
+			helpers/machine-manage.php --add-service -s nslcd -m $hostname -h $ldapserver  > temp/ldap-client/nslcdpassword
+		fi
+		if [ "$?" != 0 ];then
+			echo "something went wrong. Do you want to try that again (y/n) (if you don't, we'll quit now) "
+			read tryagain
+			if [ "$tryagain" != "y" ]; then
+				exit 1
+			fi
+		else
+			success1=true
+			nslcdPassword=`cat temp/ldap-client/nslcdpassword | grep ^password: | sed 's/password: //'`
+		fi
+	done
+
+	while [ "$success2" != true ]; do
+		echo "creating sudo account...";
+		if [ "$resetpasswordifneeded" = "y" ]; then
+			helpers/machine-manage.php --add-service -s sudo -m $hostname -h $ldapserver --force > temp/ldap-client/sudopassword
+		else
+			helpers/machine-manage.php --add-service -s sudo -m $hostname -h $ldapserver  > temp/ldap-client/sudopassword
+		fi
+		if [ "$?" != 0 ];then
+			echo "something went wrong. Do you want to try that again (y/n) (if you don't, we'll quit now) "
+			read tryagain
+			if [ "$tryagain" != "y" ]; then
+				exit 1
+			fi
+		else
+			success2=true
+			sudoPassword=`cat temp/ldap-client/sudopassword | grep ^password: | sed 's/password: //'`
+		fi
+	done
 
 else
 	if [ "$manualOrGenerate" == "e" ]; then 
 		echo "Nslcd password: "
-		read nssPassword
+		read nslcdPassword
 
 		echo "Sudo password"
 		read sudoPassword
@@ -106,7 +131,7 @@ fi
 
 #Setup configs
 sed -i "s/%sudopassword%/$sudoPassword/g" temp/ldap-client/ldap.conf
-sed -i  "s/%nslcdpassword%/$nssPassword/g" temp/ldap-client/nslcd.conf
+sed -i  "s/%nslcdpassword%/$nslcdPassword/g" temp/ldap-client/nslcd.conf
 
 
 
