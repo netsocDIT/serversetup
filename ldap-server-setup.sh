@@ -8,6 +8,8 @@ fi
 if [ -z $1 ] ; then
 	echo -e  "\nNo backup files specified to restore. If you wish to restore a database, type:"
 	echo "./ldap-server-setup2.sh backupfile"
+	echo "The backup file is an ldif format that would come from typing something like slapcat -b \"dc=netsoc,dc=dit,dc=ie\" > backupfile.ldif on the ldap server"
+	echo "the cn=config file is included within this script and is not needed"
 	exit
 fi
 
