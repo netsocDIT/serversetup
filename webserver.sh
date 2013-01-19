@@ -129,7 +129,7 @@ fi
 
 # Update- set mysql root password and install packages
 debconf-set-selections < temp/webserver/debconf-defaults
-apt-get -y install apache2 mysql-server php5 php5-ldap apache2-mpm-itk php5-mysql php5-mcrypt php5-ldap rsync ca-certificates php5-curl bzip2 php5-imagick php5-gd
+apt-get -y install apache2 mysql-server php5 php5-ldap apache2-mpm-itk php5-mysql php5-mcrypt php5-ldap rsync ca-certificates php5-curl bzip2 php5-imagick libapache2-mod-php5 php5-gd  php-apc php5-intl
 
 mkdir /etc/ssl/netsocWebserver/
 

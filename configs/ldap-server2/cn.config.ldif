@@ -654,10 +654,10 @@ olcSuffix: dc=netsoc,dc=dit,dc=ie
 olcAccess: {0}to attrs=userPassword,shadowLastChange by self write by anonymou
  s auth by dn="cn=admin,dc=netsoc,dc=dit,dc=ie" write by * none
 olcAccess: {1}to dn.base="" by * read
-olcAccess: {2}to dn.children="ou=machines,dc=netsoc,dc=dit,dc=ie" by self auth by * none
-olcAccess: {3}to dn.children="ou=sudoers,dc=netsoc,dc=dit,dc=ie" by dn.children="ou=machines,dc=netsoc,dc=dit,dc=ie" read by * none
-olcAccess: {4}to dn.children="ou=users,dc=netsoc,dc=dit,dc=ie" by dn.children="ou=machines,dc=netsoc,dc=dit,dc=ie" read by self write by * none
-olcAccess: {5}to dn.children="ou=groups,dc=netsoc,dc=dit,dc=ie" by dn.children="ou=machines,dc=netsoc,dc=dit,dc=ie" read by self write by * none
+olcAccess: {2}to dn.subtree="ou=machines,dc=netsoc,dc=dit,dc=ie" by self auth by * none
+olcAccess: {3}to dn.subtree="ou=sudoers,dc=netsoc,dc=dit,dc=ie" by dn.children="ou=machines,dc=netsoc,dc=dit,dc=ie" read by * none
+olcAccess: {4}to dn.base="ou=members,ou=users,dc=netsoc,dc=dit,dc=ie" by * read
+olcAccess: {5}to dn.subtree="ou=users,dc=netsoc,dc=dit,dc=ie" by dn.children="ou=machines,dc=netsoc,dc=dit,dc=ie" read by self write by * none
 olcAccess: {6}to * by self read by dn="cn=admin,dc=netsoc,dc=dit,dc=ie" write by * read
 olcLastMod: TRUE
 olcRootDN: cn=admin,dc=netsoc,dc=dit,dc=ie
