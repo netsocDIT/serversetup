@@ -50,5 +50,13 @@ cat /etc/rc.local | grep -v '^#'
 
 echo "the original rc.local has been copied to temp/firewall/rc.local.orig. If you're not happy with this new updated file. do NOT rerun this script or it'll overwrite it orig file with the new copy of rc.local that's now there"
 
-/etc/firewall/iptables.sh
+echo "Do you wish to run iptables.sh now and enable firewall? (if services are already running, you should add rules for those ports first"
+echo "(y/n)"
+read runfirewall
+if [ "$runfirewall" = "y" ]; then
+	echo "running firewall"
+	/etc/firewall/iptables.sh
+else
+	echo "not running firewall. Edit the file in /etc/firewall/iptables.sh and run it when you're done"
+fi
 
