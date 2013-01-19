@@ -1,0 +1,51 @@
+<VirtualHost *:80>
+	ServerName wiki.netsoc.dit.ie
+
+	RewriteEngine On
+	RewriteCond %{HTTPS} off
+	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+	AssignUserID wiki wiki
+
+	LogLevel notice
+	CustomLog ${APACHE_LOG_DIR}/wiki.access.log combined
+	ErrorLog ${APACHE_LOG_DIR}/wiki.error.log
+
+</VirtualHost>
+
+# SSL if mod_ssl enabled
+<IfModule mod_ssl.c>
+	<VirtualHost *:443>
+		ServerName wiki.netsoc.dit.ie
+		DocumentRoot /var/www/wiki
+		AssignUserID wiki wiki
+		Header add Strict-Transport-Security "max-age=604800"
+
+		<Directory /var/www/wiki >
+			Options FollowSymLinks MultiViews
+			AllowOverride All
+			#Order allow,deny
+			allow from all
+		</Directory>
+
+		LogLevel notice
+
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+
+		SSLEngine on
+		# Cert
+		SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+		#SSLCertificateFile    /etc/ssl/netsocWebserver/www.crt
+
+
+		# Key
+		SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+		#SSLCertificateKeyFile /etc/ssl/netsocWebserver/www.pem
+
+		# Chain (optional)
+		#SSLCertificateChainFile /etc/ssl/netsocWebserver/chain.pem
+
+	</VirtualHost>
+</IfModule>
+
