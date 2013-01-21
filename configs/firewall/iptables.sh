@@ -18,8 +18,8 @@ ip6tables -F -t filter
 iptables -P INPUT ACCEPT
 ip6tables -P INPUT ACCEPT
 
-iptables -P FORWARD ACCEPT
-ip6tables -P FORWARD ACCEPT
+#iptables -P FORWARD ACCEPT
+#ip6tables -P FORWARD ACCEPT
 
 iptables -P OUTPUT ACCEPT
 ip6tables -P OUTPUT ACCEPT
@@ -38,13 +38,6 @@ iptables -A INPUT -i lo -j ACCEPT
 ip6tables -A INPUT -i lo -j ACCEPT
 
 iptables -A INPUT -d 127.0.0.0/8 ! -i lo -j REJECT --reject-with icmp-port-unreachable
-
-# ICMP
-iptables -A INPUT -p icmp  -j ACCEPT
-ip6tables -A INPUT -p icmpv6 -j ACCEPT
-
-
-
 #########################
 #                       #
 #    Incoming Ports     #
@@ -55,15 +48,11 @@ ip6tables -A INPUT -p icmpv6 -j ACCEPT
 iptables -A INPUT -p tcp -m state --state NEW --dport 22 -j ACCEPT
 ip6tables -A INPUT -p tcp -m state --state NEW --dport 22 -j ACCEPT
 
-
-
-
+# ICMP
+iptables -A INPUT -p icmp  -j ACCEPT
+ip6tables -A INPUT -p icmpv6 -j ACCEPT
 
 
 # REJECT
 iptables -A INPUT -j REJECT --reject-with icmp-port-unreachable
 ip6tables -A INPUT -j REJECT --reject-with icmp6-port-unreachable
-
-
-
-
