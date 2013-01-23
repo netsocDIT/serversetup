@@ -1,8 +1,7 @@
 #/bin/bash
 # This sets up iptables to run initially on startup by placing it at the bottom of rc.local
 # cd to dir script is run from
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd $DIR
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 if [ `id -u` -ne 0 ]; then
         echo "Must be root to run this script"
