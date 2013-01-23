@@ -39,4 +39,4 @@ apt-get -y install unattended-upgrades
 
 
 cp temp/unattended-upgrades/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
-co temp/unattended-upgrades/50unattended-upgrades /etc/apt/apt.conf.d/50unattended-upgrades
+cp temp/unattended-upgrades/50unattended-upgrades /etc/apt/apt.conf.d/50unattended-upgrades
