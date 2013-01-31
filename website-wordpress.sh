@@ -3,12 +3,6 @@
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 if [ `id -u` -ne 0 ]; then
-        echo "Must be root to run this script"
-        exit 1
-fi
-
-
-if [ `id -u` -ne 0 ]; then
 	echo "Must be root to run this script"
 	exit 1
 fi
