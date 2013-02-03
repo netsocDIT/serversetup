@@ -35,7 +35,7 @@ cp -r configs/ldap-client/ temp/ldap-client
 
 apt-get update
 debconf-set-selections temp/ldap-client/debconf-defaults
-apt-get -y install libpam-ldapd libstring-random-perl libdigest-sha1-perl pwgen ldap-utils sudo-ldap php5-cli php5-ldap
+apt-get -y install libpam-ldapd  pwgen ldap-utils sudo-ldap php5-cli php5-ldap
 
 
 
