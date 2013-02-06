@@ -6,8 +6,8 @@ if [ `id -u` -ne 0 ]; then
 fi
 
 
-#packages nmap hping3 dnsutils vim less 
 apt-get update
-apt-get -y install less vim hping3 nmap dnsutils byobu
+apt-get -y install less vim hping3 nmap dnsutils byobu ntp
+
 
 echo syntax on > ~/.vimrc
