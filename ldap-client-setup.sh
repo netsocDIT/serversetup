@@ -146,11 +146,14 @@ if [ $confirm != "y" ]; then
 	exit 0
 fi
 
-
+touch  /etc/nslcd.conf
+chattr -i /etc/nslcd.conf
 cp temp/ldap-client/ca.crt /etc/ldap/ca.crt
 cp temp/ldap-client/nslcd.conf /etc/nslcd.conf
 cp temp/ldap-client/ldap.conf /etc/ldap/ldap.conf
 cp temp/ldap-client/nsswitch.conf /etc/nsswitch.conf
+
+chattr +i /etc/nslcd.conf
 
 /etc/init.d/nslcd restart
 /etc/init.d/nscd stop
